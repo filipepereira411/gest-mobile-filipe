@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identificador de Dispositivo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            color: #0076d6;
+            margin-top: 0;
+            font-size: 24px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        .info-group {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-left: 4px solid #0076d6;
+            border-radius: 4px;
+        }
+        .label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+        .value {
+            font-family: monospace;
+            font-size: 14px;
+            word-break: break-all;
+            color: #111;
+        }
+        .btn-copy {
+            background-color: #0076d6;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+        .btn-copy:hover {
+            background-color: #00569e;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Informações do Dispositivo</h1>
+    
+    <div class="info-group">
+        <span class="label">Sistema Operativo / Navegador (User Agent)</span>
+        <span class="value" id="ua">-</span>
+    </div>
+
+    <div class="info-group">
+        <span class="label">Plataforma Relatada</span>
+        <span class="value" id="platform">-</span>
+    </div>
+
+    <div class="info-group">
+        <span class="label">Resolução do Ecrã</span>
+        <span class="value" id="screen">-</span>
+    </div>
+
+    <div class="info-group">
+        <span class="label">Idioma do Sistema</span>
+        <span class="value" id="lang">-</span>
+    </div>
+
+    <div class="info-group">
+        <span class="label">Núcleos do Processador (Estimados)</span>
+        <span class="value" id="cores">-</span>
+    </div>
+
+    <div class="info-group">
+        <span class="label">Memória RAM (Estimada)</span>
+        <span class="value" id="ram">-</span>
+    </div>
+
+    <button class="btn-copy" onclick="copiarInfo()">Copiar Informações</button>
+</div>
+
+<script>
+    // Recolha de dados simples através das APIs do navegador
+    document.getElementById('ua').innerText = navigator.userAgent;
+    document.getElementById('platform').innerText = navigator.userAgentData?.platform || navigator.platform || "Desconhecida";
+    document.getElementById('screen').innerText = window.screen.width + "x" + window.screen.height + " (Janela: " + window.innerWidth + "x" + window.innerHeight + ")";
+    document.getElementById('lang').innerText = navigator.language || navigator.userLanguage;
+    document.getElementById('cores').innerText = navigator.hardwareConcurrency || "Não disponível";
+    document.getElementById('ram').innerText = navigator.deviceMemory ? navigator.deviceMemory + " GB" : "Não disponível";
+
+    function copiarInfo() {
+        const info = `
+--- INFO DISPOSITIVO ---
+User Agent: ${navigator.userAgent}
+Plataforma: ${document.getElementById('platform').innerText}
+Ecrã: ${document.getElementById('screen').innerText}
+Idioma: ${document.getElementById('lang').innerText}
+Processador: ${document.getElementById('cores').innerText} núcleos
+RAM: ${document.getElementById('ram').innerText}
+        `.trim();
+
+        navigator.clipboard.writeText(info).then(() => {
+            alert('Informações copiadas para a área de transferência!');
+        }).catch(err => {
+            alert('Erro ao copiar: ' + err);
+        });
+    }
+</script>
+
+</body>
+</html>
